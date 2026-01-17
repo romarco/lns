@@ -50,21 +50,17 @@ jobs:
       run: npm install -g cordova@latest
         
     - name: Install dependencies
-      run: npm install
+      run: npm install || true
       
-    - name: Add Android platform
-      run: cordova platform add android@latest
-      
-    - name: Install plugins from config.xml
-      run: cordova prepare
-    
     - name: Decode Google Services JSON
       continue-on-error: true
       run: |
         if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
-          mkdir -p config
-          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > config/firebase-credentials.json
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > google-services.json
         fi
+      
+    - name: Add Android platform
+      run: cordova platform add android@latest
         
     - name: Build Android APK (Debug)
       if: ${{ github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == '' }}

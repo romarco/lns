@@ -78,7 +78,6 @@
     
     <!-- Notifications -->
     <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="^7.8.0" />
-    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.3" />
     
     <!-- Geolocation -->
     <plugin name="cordova-plugin-geolocation" spec="^5.0.0" />
