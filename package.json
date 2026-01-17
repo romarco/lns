@@ -1,0 +1,30 @@
+{
+  "name": "app-lawrance-network-services",
+  "displayName": "App: Lawrance Network Services",
+  "version": "1.0.0",
+  "description": "Aplicación móvil generada con Mangole Studio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Mangole Studio",
+  "license": "ISC",
+  "devDependencies": {
+    "cordova-android": "^12.0.0",
+    "cordova-ios": "^7.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": {
+      "cordova-plugin-device": {},
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-network-information": {}
+    }
+  }
+}

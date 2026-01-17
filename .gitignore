@@ -1,0 +1,37 @@
+# ============================================
+# PROYECTO CORDOVA - Solo archivos esenciales
+# ============================================
+
+# Carpetas generadas automáticamente
+platforms/
+plugins/
+node_modules/
+
+# Archivos de construcción y firma
+*.keystore
+*.jks
+build.json
+
+# Archivos internos del proyecto
+backups/
+database/
+dev-tools/
+sys/
+uploads/
+logs/
+tmp/
+
+# Credenciales y secretos
+config/firebase-credentials.json
+firebase-credentials.json
+*credentials*.json
+*-key.json
+*.pem
+.env
+
+# Archivos PHP en la raíz (excepto necesarios)
+/*.php
+
+# Archivos MD en la raíz (excepto README)
+/*.md
+!README.md

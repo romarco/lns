@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.lawrancenetworkservices.www" version="1.0.0" android-versionCode="1" ios-CFBundleVersion="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Lawrance Network Services</name>
+    <description></description>
+    <author email="dev@example.com">Dev Team</author>
+    
+    <content src="www/index.html"/>
+    
+    <access origin="*"/>
+    
+    <!-- Preferencias globales -->
+    <preference name="DisallowOverscroll" value="true"/>
+    <preference name="BackupWebStorage" value="none"/>
+    <preference name="orientation" value="portrait"/>
+    <preference name="fullscreen" value="false"/>
+    <preference name="StatusBarOverlaysWebView" value="false"/>
+    <preference name="StatusBarBackgroundColor" value="#000000"/>
+    <preference name="StatusBarStyle" value="default"/>
+    <preference name="android-windowSoftInputMode" value="adjustResize"/>
+    <preference name="webviewbounce" value="false"/>
+    <preference name="AndroidXEnabled" value="true"/>
+    
+    <!-- iOS preferencias adicionales -->
+    <preference name="UIViewControllerBasedStatusBarAppearance" value="false"/>
+    <preference name="UIStatusBarHidden" value="false"/>
+    
+    <!-- Android -->
+    <platform name="android">
+        <preference name="android-minSdkVersion" value="22"/>
+        <preference name="android-targetSdkVersion" value="35"/>
+        <preference name="android-compileSdkVersion" value="35"/>
+        
+        <!-- Splash Screen Android 12+ usa icono por defecto de Cordova -->
+        <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF"/>
+        <preference name="SplashScreenDelay" value="3000"/>
+        <preference name="AutoHideSplashScreen" value="true"/>
+        
+        <allow-intent href="market:*"/>
+    </platform>
+    
+    <!-- iOS -->
+    <platform name="ios">
+        <preference name="Suppresses3DTouchGesture" value="true"/>
+        <preference name="SplashScreenDelay" value="3000"/>
+        <preference name="AutoHideSplashScreen" value="true"/>
+        
+        <allow-intent href="itms:*"/>
+        <allow-intent href="itms-apps:*"/>
+        
+        <!-- iOS Permissions -->
+        <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
+            <string>This app needs access to the microphone to record audio messages.</string>
+        </edit-config>
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+            <string>This app needs access to the camera to take photos and videos.</string>
+        </edit-config>
+        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+            <string>This app needs access to your photo library to select images.</string>
+        </edit-config>
+        <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+            <string>This app needs access to your location to show nearby projects and services.</string>
+        </edit-config>
+        <edit-config target="NSLocationAlwaysUsageDescription" file="*-Info.plist" mode="merge">
+            <string>This app needs access to your location even when not in use for background tracking.</string>
+        </edit-config>
+    </platform>
+    
+    <!-- Plugins -->
+    <!-- Core Cordova Plugins -->
+    <plugin name="cordova-plugin-device" spec="^2.1.0" />
+    <plugin name="cordova-plugin-network-information" spec="^3.0.0" />
+    <plugin name="cordova-plugin-statusbar" spec="^4.0.0" />
+    
+    <!-- Camera and Media -->
+    <plugin name="cordova-plugin-camera" spec="^7.0.0" />
+    <plugin name="cordova-plugin-media-capture" spec="^3.0.3" />
+    <plugin name="cordova-plugin-file" spec="^8.0.1" />
+    
+    <!-- Notifications -->
+    <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="^7.8.0" />
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.3" />
+    
+    <!-- Geolocation -->
+    <plugin name="cordova-plugin-geolocation" spec="^5.0.0" />
+    
+    <!-- Storage -->
+    <plugin name="cordova-sqlite-storage" spec="^6.1.0" />
+    
+    <!-- Network and Permissions -->
+    <plugin name="cordova-plugin-android-permissions" spec="^1.1.5" />
+    
+    <!-- Globalization -->
+    <plugin name="cordova-plugin-globalization" spec="^1.11.0" />
+    
+    <!-- Vibration (for notifications) -->
+    <plugin name="cordova-plugin-vibration" spec="^3.1.1" />
+
+</widget>

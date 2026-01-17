@@ -1,0 +1,1661 @@
+/**
+ * controls.css - Mangole NS Control Library Styles
+ * Modular CSS for modern Mangole controls
+ * Version: 3.0
+ */
+
+/* ==========================================================================
+   DATAGRIDV3 - Modern Flexbox Layout
+   ========================================================================== */
+
+.mangole-datagridv3 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #b5b5b5;
+  box-sizing: border-box;
+}
+
+/* Header Container */
+.mangole-datagridv3 .mangole-datagrid-heading {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border-bottom: 1px solid #b5b5b5;
+  box-sizing: border-box;
+  min-height: 32px;
+  padding-right: 12px; /* Espacio para compensar scrollbar (ancho tÃ­pico) */
+}
+
+/* Header Cells */
+.mangole-datagridv3 .mangole-datagrid-heading .mangole-datagrid-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-right: 1px solid #b5b5b5;
+  box-sizing: border-box;
+  flex-shrink: 0; /* Evita que las columnas se compriman */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  color: #333;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer
+}
+
+.mangole-datagridv3 .mangole-datagrid-heading .mangole-datagrid-cell:last-child {
+  border-right: none;
+}
+
+/* Content Container */
+.mangole-datagridv3 .mangole-datagrid-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  padding-bottom: 65px;
+  height: auto; /* Default: auto-height (no fullHeight) */
+}
+
+/* Full Height Mode */
+.mangole-datagridv3 .mangole-datagrid-content.fullheight.withoutfooter {
+  height: calc(100% - 33px); /* Solo header */
+}
+
+.mangole-datagridv3 .mangole-datagrid-content.fullheight:not(.withoutfooter) {
+  height: calc(100% - 93px); /* Header (33px) + Footer (60px) */
+}
+
+/* Forzar ancho fijo del scrollbar a 17px */
+.mangole-datagridv3 .mangole-datagrid-content::-webkit-scrollbar {
+  width: 12px;
+}
+
+.mangole-datagridv3 .mangole-datagrid-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.mangole-datagridv3 .mangole-datagrid-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.mangole-datagridv3 .mangole-datagrid-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Content Rows */
+.mangole-datagridv3 .mangole-datagrid-content .mangole-datagrid-row {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #b5b5b5;
+  box-sizing: border-box;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.mangole-datagridv3 .mangole-datagrid-content .mangole-datagrid-row:hover {
+  background-color: #FBFBFB;
+}
+
+
+
+.mangole-datagridv3 .mangole-datagrid-row:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+/* Content Cells */
+.mangole-datagridv3 .mangole-datagrid-content .mangole-datagrid-cell {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-right: 1px solid #b5b5b5;
+  box-sizing: border-box;
+  flex-shrink: 0; /* Evita que las columnas se compriman */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+
+.mangole-datagridv3 .mangole-datagrid-content .mangole-datagrid-cell:last-child {
+  border-right: none;
+}
+
+/* Cell Types */
+.mangole-datagridv3 .mangole-datagrid-cell.center {
+  justify-content: center;
+}
+
+.mangole-datagridv3 .mangole-datagrid-cell.checkbox-type,
+.mangole-datagridv3 .mangole-datagrid-cell.radiobox-type {
+  justify-content: center;
+}
+
+.mangole-datagridv3 .mangole-datagrid-cell.textbox-type input,
+.mangole-datagridv3 .mangole-datagrid-cell.select-type select {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  box-sizing: border-box;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  font-size: 14px;
+}
+
+.mangole-datagridv3 .mangole-datagrid-cell.textbox-type input:focus,
+.mangole-datagridv3 .mangole-datagrid-cell.select-type select:focus {
+  outline: none;
+  border: none;
+}
+
+/* Footer Container */
+.mangole-datagridv3 .mangole-datagrid-footer {
+  display: flex;
+  height: 60px;
+  padding: 11px;
+  background-color: #f8f8f8;
+  border-top: 1px solid #b5b5b5;
+  box-sizing: border-box;
+}
+
+/* Width Utilities - Para columnas con ancho fijo (px) */
+.mangole-datagridv3 [data-width-type="fixed"] {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+/* Width Utilities - Para columnas con ancho porcentual (%) */
+.mangole-datagridv3 [data-width-type="percent"] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+/* Width Utilities - Para columnas auto (distribuir espacio restante) */
+.mangole-datagridv3 [data-width-type="auto"] {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .mangole-datagridv3 .mangole-datagrid-content {
+    max-height: 300px;
+  }
+  
+  .mangole-datagridv3 .mangole-datagrid-cell {
+    padding: 4px 6px;
+    font-size: 14px;
+  }
+}
+
+/* ==========================================================================
+   DATAGRIDV3 - COLUMN SELECTOR
+   ========================================================================== */
+
+/* BotÃ³n de columnas en header */
+.btn-datagrid-columns {
+  position: absolute;
+  width: 30px;
+  height: 31px;
+  right: 0;
+  top: 0;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #999;
+  z-index: 10;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.btn-datagrid-columns:hover {
+  color: #333;
+}
+
+/* Ajustar header para el botÃ³n */
+.mangole-datagridv3 .mangole-datagrid-heading {
+  position: relative;
+}
+
+/* Columnas ocultas */
+.mangole-datagridv3 .mangole-datagrid-heading .mangole-datagrid-cell.hidden,
+.mangole-datagridv3 .mangole-datagrid-row .mangole-datagrid-cell.hidden {
+  display: none !important;
+}
+
+/* Modal de selector de columnas (usado en producción) */
+.datagrid-columns-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.datagrid-columns-modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+.datagrid-columns-modal-content {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+
+.datagrid-columns-modal.active .datagrid-columns-modal-content {
+  transform: scale(1);
+}
+
+.datagrid-columns-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #b5b5b5;
+  border-radius: 12px 12px 0 0;
+  background: #f8f9fa;
+}
+
+.datagrid-columns-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.datagrid-columns-modal-body {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+
+.datagrid-columns-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #b5b5b5;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.datagrid-columns-modal-footer .btn {
+  padding: 8px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-weight: 500;
+}
+
+.btn-cancel-columns {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancel-columns:hover {
+  background: #5a6268;
+}
+
+.btn-save-columns {
+  background: #007acc;
+  color: white;
+}
+
+.btn-save-columns:hover {
+  background: #005a9e;
+}
+
+/* Contenedor del selector */
+.column-selector-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+}
+
+.column-selector-counter {
+  padding: 12px 16px;
+  background: #f0f0f0;
+  border-bottom: 1px solid #b5b5b5;
+  font-weight: 600;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.column-selector-counter #visible-count {
+  color: #000;
+}
+
+.column-selector-actions {
+  padding: 12px 16px;
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #b5b5b5;
+  background: #fafafa;
+}
+
+.column-selector-actions button {
+  flex: 1;
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.column-selector-list {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+  max-height: 400px;
+}
+
+.column-selector-item {
+  padding: 10px 16px;
+  border-bottom: 1px solid #b5b5b5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.column-selector-item:hover {
+  background: #f9f9f9;
+}
+
+.column-selector-item:last-child {
+  border-bottom: none;
+}
+
+.column-selector-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.column-selector-item label {
+  flex: 1;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  user-select: none;
+}
+
+/* Scrollbar personalizado */
+.column-selector-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.column-selector-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.column-selector-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.column-selector-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ====================================
+   MANGOLE MODAL - ESTILO ESTANDARIZADO
+   ==================================== */
+
+.mangole-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mangole-modal.active {
+  opacity: 1;
+}
+
+.mangole-modal.closing {
+  opacity: 0;
+}
+
+.mangole-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.mangole-modal-content {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+
+.mangole-modal.active .mangole-modal-content {
+  transform: scale(1);
+}
+
+/* TamaÃ±os de modal */
+.mangole-modal.small .mangole-modal-content {
+  max-width: 500px;
+}
+
+.mangole-modal.medium .mangole-modal-content {
+  max-width: 800px;
+}
+
+.mangole-modal.large .mangole-modal-content {
+  max-width: 1200px;
+}
+
+.mangole-modal.xlarge .mangole-modal-content {
+  max-width: 1400px;
+  height: calc(100vh - 200px);
+  max-height: 90vh;
+}
+
+.mangole-modal.fullscreen .mangole-modal-content {
+  width: 95%;
+  max-width: none;
+  height: 95vh;
+  max-height: 95vh;
+}
+
+.mangole-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #b5b5b5;
+  border-radius: 12px 12px 0 0;
+}
+
+.mangole-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.btn-close-modal {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #333;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-close-modal:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.mangole-modal-body {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+
+/* CodeMirror al 100% de altura en modales */
+.mangole-modal .CodeMirror {
+  height: 100% !important;
+}
+
+.mangole-modal .event-code-editor {
+  height: 100% !important;
+}
+
+.mangole-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid #b5b5b5;
+  background: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+}
+
+.mangole-modal-footer .btn {
+  padding: 10px 24px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.mangole-modal-footer .btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.mangole-modal-footer .btn-secondary:hover {
+  background: #5a6268;
+}
+
+.mangole-modal-footer .btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.mangole-modal-footer .btn-primary:hover {
+  background: #0056b3;
+}
+
+/* ==========================================================================
+   TEXTBOX - Input de texto general con label
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Control de entrada de texto con soporte para diferentes tipos
+                (text, password, email, phone, etc.). Incluye label, validaciÃ³n
+                visual y estados readonly/disabled.
+   ========================================================================== */
+
+.mangole-general-textbox {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.textbox-send-email-button {
+  display: inline-block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 35px;
+  right: 5px;
+  background-image: url(../img/ui-icons_454545_256x240.png);
+  background-repeat: no-repeat;
+  background-position: -80px -97px;
+  background-color: #fff;
+  z-index: 10;
+}
+
+.mangole-general-textbox label {
+  font-size: 14px;
+  color: #000;
+  text-align: left;
+}
+
+.mangole-general-textbox label input[type="checkbox"] {
+  margin: 0 5px 0 0; 
+}
+
+.mangole-general-textbox input[type="text"],
+.mangole-general-textbox input[type="color"],
+.mangole-general-textbox input[type="number"],
+.mangole-general-textbox input[type="password"],
+.mangole-general-textbox input[type="phone"],
+.mangole-general-textbox input[type="search"],
+.mangole-general-textbox input[type="date"],
+.mangole-general-textbox input[type="email"],
+.mangole-general-textbox input[type="tel"],
+.mangole-general-textbox input[type="year"],
+.mangole-general-textbox textarea {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #9e9e9e;
+  padding: 4px;
+  margin: 3px 0 10px 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  font-size: 15px;
+  color: #374767;
+}
+
+.mangole-general-textbox input[type="color"] {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  top: 6px;
+  cursor: pointer;
+}
+
+.mangole-general-textbox input[type="text"].error,
+.mangole-general-textbox input[type="number"].error,
+.mangole-general-textbox input[type="password"].error,
+.mangole-general-textbox input[type="date"].error,
+.mangole-general-textbox textarea.error {
+  border: 1px solid #E09090;
+  background-color: #FDE5E9;
+}
+
+.mangole-general-textbox input[type="text"][readonly],
+.mangole-general-textbox input[type="color"][readonly],
+.mangole-general-textbox input[type="number"][readonly],
+.mangole-general-textbox input[type="password"][readonly],
+.mangole-general-textbox input[type="phone"][readonly],
+.mangole-general-textbox input[type="search"][readonly],
+.mangole-general-textbox input[type="date"][readonly],
+.mangole-general-textbox input[type="email"][readonly],
+.mangole-general-textbox input[type="tel"][readonly],
+.mangole-general-textbox input[type="year"][readonly] {
+  padding-left: 36px;
+  background-image: url(../img/candado.png);
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-position: 3px 50%;
+}
+
+.mangole-general-textbox input[type="text"]:hover,
+.mangole-general-textbox input[type="color"]:hover,
+.mangole-general-textbox input[type="number"]:hover,
+.mangole-general-textbox input[type="password"]:hover,
+.mangole-general-textbox input[type="phone"]:hover,
+.mangole-general-textbox input[type="search"]:hover,
+.mangole-general-textbox input[type="date"]:hover,
+.mangole-general-textbox input[type="email"]:hover,
+.mangole-general-textbox input[type="tel"]:hover,
+.mangole-general-textbox input[type="year"]:hover {
+  border: 1px solid #C6CBD5;
+}
+
+.mangole-general-textbox select {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #b5b5b5;
+  padding: 4px;
+  margin: 3px 0 10px 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  font-size: 15px;
+  color: #374767;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  background-image: url(../img/select-arrow.png);
+  background-position: calc(100% - 10px) center;
+  background-repeat: no-repeat;
+  background-size: 15px auto;
+}
+
+.mangole-general-textbox select[readonly] {
+  padding-left: 36px;
+  background-image: url(../img/candado.png);
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-position: 3px 50%;
+}
+
+.mangole-general-textbox select.error {
+  border: 1px solid #E09090;
+  background-color: #FDE5E9;
+}
+
+.mangole-general-textbox select[disabled="disabled"] {
+  background-color: #dcdcdc;
+}
+
+/* Custom.css overrides */
+.mangole-general-textbox input[type="text"],
+.mangole-general-textbox input[type="number"],
+.mangole-general-textbox input[type="password"],
+.mangole-general-textbox input[type="date"],
+.mangole-general-textbox textarea,
+.mangole-general-textbox select {
+  border: 1px solid #b5b5b5;
+}
+
+/* ==========================================================================
+   BUTTON - BotÃ³n de acciÃ³n
+   Última actualización: 15 de noviembre de 2025
+   Descripción: BotÃ³n estÃ¡ndar con variantes de color (blue, gray).
+                Soporta estados hover, active, disabled.
+   ========================================================================== */
+
+.mangole-btn {
+  display: inline-block;
+  height: 37px;
+  padding: 0 20px;
+  font-size: 14px;
+  line-height: 37px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  color: #000;
+  background-color: #b7b7b7;
+  border-radius: 4px;
+  border: none;
+}
+
+a.mangole-btn:link {
+  text-decoration: none;
+  color: #333;
+}
+
+a.mangole-btn:visited {
+  text-decoration: none;
+  color: #333;
+}
+
+.mangole-btn:hover,
+.mangole-btn:focus {
+  background-color: #bfbfbf;
+}
+
+.mangole-btn.active,
+.mangole-btn:active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05);
+}
+
+.mangole-btn.disabled,
+.mangole-btn[disabled] {
+  cursor: default;
+  background-image: none;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.mangole-btn.blue {
+  color: #ffffff;
+  background-color: #327DE2;
+  border: none;
+}
+
+a.mangole-btn.blue:link {
+  text-decoration: none;
+  color: #fff;
+}
+
+a.mangole-btn.blue:visited {
+  text-decoration: none;
+  color: #fff;
+}
+
+.mangole-btn.blue:active,
+.mangole-btn.blue.active {
+  outline: 0!important;
+  text-decoration: none;
+  color: #fff;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.05);
+}
+
+.mangole-btn.blue:hover {
+  text-decoration: none;
+  color: #fff;
+}
+
+.mangole-btn.blue:hover,
+.mangole-btn.blue:focus,
+.mangole-btn.blue:active,
+.mangole-btn.blue.active,
+.mangole-btn.blue.disabled,
+.mangole-btn.blue[disabled] {
+  color: #ffffff;
+  background-color: #2D75D6;
+}
+
+.mangole-btn.gray {
+  color: #333;
+  background-color: #dedede;
+  border: none;
+}
+
+a.mangole-btn.gray:link {
+  text-decoration: none;
+  color: #333;
+}
+
+a.mangole-btn.gray:visited {
+  text-decoration: none;
+  color: #333;
+}
+
+.mangole-btn.gray:active,
+.mangole-btn.gray.active {
+  outline: 0!important;
+  text-decoration: none;
+  color: #333;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.05);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.05);
+}
+
+/* ==========================================================================
+   LABEL - Etiqueta de texto
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Etiqueta simple de texto para mostrar informaciÃ³n estÃ¡tica.
+   ========================================================================== */
+
+.mangole-label {
+  display: inline-block;
+  font-size: 15px;
+  color: #191919;
+  text-align: left;
+}
+
+/* ==========================================================================
+   PANEL - Contenedor con encabezado y cuerpo
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Panel contenedor con heading opcional, body y footer opcional.
+                Calcula automÃ¡ticamente las alturas segÃºn los elementos presentes.
+   ========================================================================== */
+
+.mangole-panel {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px #b5b5b5 solid;
+  border-radius: 5px;
+}
+
+.mangole-panel-heading {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  padding: 15px 15px;
+  float: left;
+  background-color: #dfdfdf;
+  color: #333;
+  border-bottom: 1px #b5b5b5 solid;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.mangole-panel .mangole-panel-heading h2 {
+  float: left;
+  padding: 0;
+  color: #191919;
+  font-size: 17px;
+  line-height: 18px;
+  font-weight: 300;
+  cursor: default;
+}
+
+.mangole-panel-body {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.mangole-panel-body.with-heading {
+  height: calc(100% - 50px);
+  padding: 10px;
+}
+
+.mangole-panel-body.with-footer {
+  height: calc(100% - 59px);
+}
+
+.mangole-panel-body.with-heading.with-footer {
+  height: calc(100% - 108px);
+}
+
+.mangole-panel-footer {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  padding: 11px;
+  float: left;
+  background-color: #fff;
+  border-top: 1px #b5b5b5 solid;
+}
+
+/* ==========================================================================
+   FORM - Contenedor de formulario
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Contenedor de formulario con body scrollable.
+   ========================================================================== */
+
+.mangole-form {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mangole-form-body {
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ==========================================================================
+   SPLIT CONTAINER - Layout de filas y columnas
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Sistema de layout basado en display: table para crear
+                estructuras de filas y columnas responsivas.
+   ========================================================================== */
+
+.mangole-split-container {
+  display: table;
+  position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.mangole-split-container-heading {
+  display: table-row;
+}
+
+.mangole-split-container-row {
+  display: table-row;
+}
+
+.mangole-split-container-cell {
+  position: relative;
+  display: table-cell;
+  vertical-align: top;
+}
+
+/* ==========================================================================
+   BLANK WRAPPER - Contenedor neutro con header, body y footer opcionales
+   Última actualización: 30 de noviembre de 2025
+   Descripción: Contenedor con secciones opcionales (header, body, footer).
+                El body es obligatorio. Header y footer se renderizan si están
+                configurados con hasHeader: true o hasFooter: true.
+   ========================================================================== */
+
+.mangole-blank-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.mangole-blank-wrapper-header {
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid #b5b5b5;
+  background-color: #f5f5f5;
+  flex-shrink: 0;
+}
+
+.mangole-blank-wrapper-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  overflow: auto;
+}
+
+.mangole-blank-wrapper-footer {
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  border-top: 1px solid #b5b5b5;
+  background-color: #f5f5f5;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   STRUCTURED LAYOUT - Layout complejo con header, menús laterales, contenido y footer
+   Última actualización: 7 de diciembre de 2025
+   Descripción: Layout estructurado con 5 secciones opcionales:
+                - header (top)
+                - leftMenu (sidebar izquierdo)
+                - content (centro, obligatorio)
+                - rightMenu (sidebar derecho)
+                - footer (bottom)
+                Usa flexbox para distribución responsive.
+   ========================================================================== */
+
+.mangole-structured-layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mangole-structured-layout-header {
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid #b5b5b5;
+  background-color: #f5f5f5;
+  flex-shrink: 0;
+}
+
+.mangole-structured-layout-content-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+}
+
+.mangole-structured-layout-left-menu {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  border-right: 1px solid #b5b5b5;
+  background-color: #fafafa;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.mangole-structured-layout-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+}
+
+.mangole-structured-layout-right-menu {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  border-left: 1px solid #b5b5b5;
+  background-color: #fafafa;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.mangole-structured-layout-footer {
+  display: flex;
+  width: 100%;
+  padding: 12px;
+  border-top: 1px solid #b5b5b5;
+  background-color: #f5f5f5;
+  flex-shrink: 0;
+}
+
+/* Responsive: En pantallas pequeñas, los menús laterales se ocultan */
+@media (max-width: 768px) {
+  .mangole-structured-layout-left-menu,
+  .mangole-structured-layout-right-menu {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   INPUT FILE - Carga de archivos con preview
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Control para subir archivos/imÃ¡genes con label y Descripción.
+   ========================================================================== */
+
+.mangole-general-inputfile {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.mangole-general-inputfile .mangole-general-inputfile-label {
+  display: inline-block;
+  width: 100%;
+  padding: 0px 0px 5px 0px;
+  font-size: 14px;
+  color: #000;
+  text-align: left;
+}
+
+.mangole-general-inputfile .mangole-general-inputfile-description {
+  display: inline-block;
+  width: 100%;
+  padding: 0px 0px 20px 0px;
+  font-size: 13px;
+  color: #666;
+}
+
+/* Upload file wrapper */
+div.multiplesImagesUpload,
+div.multiplesFilesUpload {
+  padding: 10px 10px 0 10px;
+  border: 1px #b5b5b5 solid;
+}
+
+div.multiplesImagesUpload:hover,
+div.multiplesFilesUpload:hover {
+  border: 1px #C6CBD5 solid;
+}
+
+/* ==========================================================================
+   MATERIAL CHECKBOX - Checkbox con estilo Material Design
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Checkbox animado con estilo Material Design.
+                Incluye variante para radio buttons.
+   ========================================================================== */
+
+label.material-checkbox-label {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+label.material-checkbox-label.short {
+  position: absolute;
+  width: 75px;
+  top: 0;
+  right: 20px;
+  margin-bottom: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+label.material-checkbox-label input[type=checkbox],
+label.material-checkbox-label input[type=radio] {
+  display: none;
+}
+
+label.material-checkbox-label label.material-checkbox-label {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  top: -4px;
+  border: 2px #ccc solid;
+  -webkit-transition-duration: .1s;
+  transition-duration: .1s;
+}
+
+label.material-checkbox-label label.material-checkbox-label.radio {
+  border-radius: 50%;
+}
+
+.material-checkbox-label [type=checkbox]:checked + label {
+  top: -5px;
+  left: 2px;
+  width: 10px;
+  height: 15px;
+  margin-right: 20px;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid #199386;
+  border-bottom: 2px solid #199386;
+  -webkit-transform: rotate(40deg);
+  transform: rotate(40deg);
+  backface-visibility: hidden;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+}
+
+.material-checkbox-label [type=radio]:checked + label {
+  border: 5px #ccc solid;
+  background-color: #199386;
+  border-radius: 50%;
+}
+
+/* ==========================================================================
+   TOGGLE BUTTON - Switch on/off
+   Última actualización: 15 de noviembre de 2025
+   Descripción: Toggle button animado estilo iOS para valores booleanos.
+   ========================================================================== */
+
+.mangole-toggle-button { 
+  background-color: white; 
+  margin: 5px 0; 
+  border-radius: 20px; 
+  border: 2px solid #D0D0D0; 
+  height: 28px; 
+  cursor: pointer; 
+  width: 54px; 
+  position: relative; 
+  display: inline-block; 
+  user-select: none; 
+  -webkit-user-select: none; 
+  -ms-user-select: none; 
+  -moz-user-select: none; 
+}
+
+.mangole-toggle-button button.mangole-toggle-button { 
+  cursor: pointer; 
+  outline: 0; 
+  display:block; 
+  position: absolute; 
+  left: 0; 
+  top: 0; 
+  border-radius: 100%; 
+  width: 30px; 
+  height: 30px; 
+  background-color: white; 
+  float: left; 
+  margin: -3px 0 0 -3px; 
+  border: 2px solid #D0D0D0; 
+  transition: left 0.3s; 
+}
+
+.mangole-toggle-button[data-state="1"] { 
+  background-color: #83B152; 
+  border: 2px solid #7DA652; 
+}
+
+.mangole-toggle-button[data-state="1"] button.mangole-toggle-button { 
+  left: 26px; 
+  top: 0; 
+  margin: 0; 
+  border: none; 
+  width: 24px; 
+  height: 24px; 
+  box-shadow: 0 0 4px rgba(0,0,0,0.1); 
+}
+
+/* ==========================================================================
+   SIDEBARMENU - Modern Sidebar Navigation Menu
+   ========================================================================== */
+
+.mangole-sidebar-menu {
+	display: inline-block;
+	background: #fff;
+	border: 1px #e5e6e1 solid;
+	list-style: none;
+	font-size: 15px;
+}
+	/* Items principales del menú (parents) */
+	.mangole-sidebar-menu > li {
+		width: 100%;
+		min-height: 50px;
+		float: left;
+		line-height: 50px;
+		vertical-align: middle;
+		border-bottom: 1px #b5b5b5 solid;
+		cursor: pointer;
+	}
+		.mangole-sidebar-menu > li:last-child {
+			border-bottom: none;
+		}
+		
+	/* Item activo en el menú principal */
+	.mangole-sidebar-menu > li.mangole-li-active {
+		background-color: #f0f0f0;
+		border-left: 3px solid #37b5e8;
+	}
+	
+	/* Título del menú */
+	.mangole-sidebar-menu .mangole-sidebar-menu-title {
+		color: #fff;
+		background-color: #37b5e8;
+	}
+	
+	/* Items del menú - hover effect */
+	.mangole-sidebar-menu > li:not(.mangole-sidebar-menu-title):hover {
+		background: #f8f8f8;
+		transition-duration: .2s;
+	}
+		
+		/* Icono del menú */
+		.mangole-sidebar-menu li .mangole-sidebar-menu-icon {
+			display: inline-block;
+			height: 100%;
+			float: left;
+			text-align: center;
+			vertical-align: middle;
+			font-size: 30px;
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+		}
+		
+		/* Label del menú */
+		.mangole-sidebar-menu li .mangole-sidebar-menu-label {
+			display: inline-block;
+			height: 100%;
+			float: left;
+			padding: 0 10px;
+		}
+		
+	/* Submenú de opciones (hijo) */
+	.mangole-sidebar-menu li .mangole-sidebar-menu-li-options {
+		width: 100%;
+		height: 1px;
+		float: left;
+		list-style: none;
+		-webkit-transition-duration: .2s;
+    transition-duration: .2s;
+	}
+		/* Submenú activo (desplegado) */
+		.mangole-sidebar-menu li .mangole-sidebar-menu-li-options.mangole-options-active {
+			height: auto;
+		}
+		
+		/* Items del submenú */
+		.mangole-sidebar-menu li .mangole-sidebar-menu-li-options > li {
+			position: relative;
+			width: 100%;
+			min-height: 50px;
+			float: left;
+			line-height: 50px;
+			vertical-align: middle;
+			cursor: pointer;
+			color: #0F77A0;
+			background: url(../img/bgpatern.png) #FAFAFA repeat;
+		}
+			.mangole-sidebar-menu li .mangole-sidebar-menu-li-options > li:last-child {
+				border-bottom: none;
+			}
+			
+			/* Icono de items del submenú */
+			.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li .mangole-sidebar-menu-icon {
+				display: block;
+				width: 50px;
+				height: 50px;
+				float: left;
+				border-right: 1px #e5e6e1 solid;
+				text-align: center;
+			}
+			
+			/* Label de items del submenú */
+			.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li .mangole-sidebar-menu-label {
+				display: block;
+				height: 50px;
+				float: left;
+				padding: 0 0 0 10px;
+			}
+
+			/* Mostrar menú contextual al hacer hover */
+			.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li:hover > .mangole-sidebar-menu-li-options-contextmenu {
+				display: block;
+			}
+
+			/* Menú contextual (permisos: agregar, editar, eliminar, etc.) */
+			.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li .mangole-sidebar-menu-li-options-contextmenu {
+				display: none;
+				position: absolute;
+				width: 100%;
+				height: auto;
+				top: 0;
+				left: 100%;
+				background-color: #fff;
+				z-index: 500;
+				box-shadow: 0px 0px 5px #e5e6e1;
+				border: 1px #e5e6e1 solid;
+				overflow: hidden;
+			}
+
+				/* Labels del menú contextual */
+				.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li .mangole-sidebar-menu-li-options-contextmenu-label {
+					width: 100%;
+					float: left;
+					border-bottom: 1px #b5b5b5 solid;
+					text-shadow: 1px 1px 0px #fff;
+					padding: 0 10px;
+					min-height: 40px;
+					line-height: 40px;
+					cursor: pointer;
+				}
+					.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li .mangole-sidebar-menu-li-options-contextmenu-label:last-child {
+						border-bottom: none;
+					}
+					
+					.mangole-sidebar-menu li .mangole-sidebar-menu-li-options li .mangole-sidebar-menu-li-options-contextmenu-label:hover {
+						background-color: #f8f8f8;
+					}
+
+/* ==========================================================================
+   SIDEBAR SUBMENU OVERLAY - Mobile Submenu
+   ========================================================================== */
+
+.mangole-sidebar-submenu-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 9998;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.mangole-sidebar-submenu {
+	position: relative;
+	background-color: #fff;
+	width: 90%;
+	max-width: 400px;
+	max-height: 80%;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transform: translate3d(0, -100%, 0);
+	transition: transform 0.3s ease-in-out;
+	overflow-y: auto;
+}
+
+.mangole-sidebar-submenu-options-wrapper {
+	padding: 20px;
+}
+
+.mangole-sidebar-submenu-options {
+	padding: 15px;
+	border-bottom: 1px solid #e5e6e1;
+	cursor: pointer;
+	font-size: 16px;
+	color: #333;
+}
+
+.mangole-sidebar-submenu-options:last-child {
+	border-bottom: none;
+}
+
+.mangole-sidebar-submenu-options:hover {
+	background-color: #f8f8f8;
+}
+
+.mangole-sidebar-submenu-close-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 24px;
+	cursor: pointer;
+	color: #333;
+	background-color: #f0f0f0;
+	border-radius: 50%;
+}
+
+.mangole-sidebar-submenu-close-button:hover {
+	background-color: #e0e0e0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#index-page0-mnu1 { /* Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #515151 #515151;
+}
+#index-page0-mnu1::-webkit-scrollbar { /* Chrome, Edge, and Safari */
+  width: 10px;
+}
+#index-page0-mnu1::-webkit-scrollbar-track {
+  background: #292929;
+}
+#index-page0-mnu1::-webkit-scrollbar-thumb {
+  background-color: #696969;
+  border-radius: 10px;
+  border: 3px solid #292929;
+}
+#index-page0-mnu1::-webkit-scrollbar-button:start:decrement,
+#index-page0-mnu1::-webkit-scrollbar-button:end:increment {
+  height: 10px;
+  display: block;
+  background-color: #292929;
+}
+#index-page0-mnu1 > li {
+  line-height: normal;
+  border-bottom: 1px #444444 solid;
+}
+#index-page0-mnu1 > li.mangole-li-active {
+  background: #8fd7d4;
+}
+#index-page0-mnu1 > li.mangole-li-active > ul > li{
+  border-top: 1px #444444 solid;
+}
+
+#index-page0-mnu1 > li,
+#index-page0-mnu1 > li.mangole-li-active > ul > li {
+  min-height: 80px;
+  font-size: 13px;
+  color: #fff;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+
+  background: url(../img/leftmenuarrow.png) 100px center no-repeat;
+}
+
+#index-page0-mnu1 > li:hover:not(.mangole-sidebar-menu-title) {
+  background-color: #2b2b2b;
+}
+#index-page0-mnu1 > li.mangole-li-active > ul > li{
+  line-height: normal;
+  background: #6A605F;
+  border-top: 1px #584d4c solid;
+}
+#index-page0-mnu1 > li > span.mangole-sidebar-menu-icon {
+  display: inline-block;
+  width: 100%;
+  height: calc(100% - 28px);
+  padding: 10px 0 0 0;
+}
+#index-page0-mnu1 > li > span.mangole-sidebar-menu-label,
+#index-page0-mnu1 > li.mangole-li-active > ul > li > span.mangole-sidebar-menu-li-options-contextmenu,
+#index-page0-mnu1 > li.mangole-li-active > ul > li > span.mangole-sidebar-menu-label {
+  width: 100%;
+  height: auto;
+  padding: 0px 5px;
+  text-align: center;
+  font-size: 13px;
+  color: #fff;
+}
+
+
+/* ==========================================================================
+   HEADER BUTTON - Mobile Generic Button (Mobile)
+   ========================================================================== */
+
+.header-button {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    box-shadow: none;
+    text-decoration: none;
+}
+.header-button::before {
+    content: attr(data-icon);
+    font-size: 24px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+    .header-button {
+        color: #ffffff;
+    }
+}
+/* Hover effect */
+.header-button:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+}
+@media (prefers-color-scheme: dark) {
+    .header-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+/* Active/Focus states */
+.header-button:active,
+.header-button:focus {
+    outline: none;
+}
+
+/* ==========================================================================
+   HEADER TITLE - Mobile Generic title (Mobile)
+   ========================================================================== */
+.header-title {
+  flex: 1; 
+  align-items: center; 
+  font-size: 20px; 
+  font-weight: 500; 
+  color: #fff;
+}
