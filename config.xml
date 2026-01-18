@@ -76,9 +76,6 @@
     <plugin name="cordova-plugin-media-capture" spec="^3.0.3" />
     <plugin name="cordova-plugin-file" spec="^8.0.1" />
     
-    <!-- Notifications -->
-    <plugin name="cordova-plugin-fcm-with-dependecy-updated" spec="^7.8.0" />
-    
     <!-- Geolocation -->
     <plugin name="cordova-plugin-geolocation" spec="^5.0.0" />
     
