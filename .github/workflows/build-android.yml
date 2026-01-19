@@ -54,6 +54,58 @@ jobs:
       
     - name: Add Android platform
       run: cordova platform add android@latest
+      
+    - name: Setup Firebase Configuration Files
+      run: |
+        # Android: google-services.json
+        if [ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]; then
+          echo "✓ Using real google-services.json from secrets"
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 -d > platforms/android/app/google-services.json
+        else
+          echo "⚠ Creating dummy google-services.json (notifications won't work)"
+          cat > platforms/android/app/google-services.json << 'EOF'
+        {
+          "project_info": {
+            "project_number": "123456789000",
+            "firebase_url": "https://dummy-project.firebaseio.com",
+            "project_id": "dummy-project",
+            "storage_bucket": "dummy-project.appspot.com"
+          },
+          "client": [
+            {
+              "client_info": {
+                "mobilesdk_app_id": "1:123456789000:android:0000000000000000",
+                "android_client_info": {
+                  "package_name": "com.lawrancenetworkservices.www"
+                }
+              },
+              "oauth_client": [],
+              "api_key": [
+                {
+                  "current_key": "AIzaSyDummyKeyForBuildOnly123456789"
+                }
+              ],
+              "services": {
+                "appinvite_service": {
+                  "other_platform_oauth_client": []
+                }
+              }
+            }
+          ],
+          "configuration_version": "1"
+        }
+        EOF
+        fi
+        
+        # iOS: GoogleService-Info.plist (cuando se agregue plataforma iOS)
+        if [ -d "platforms/ios" ]; then
+          if [ -n "${{ secrets.GOOGLE_SERVICES_PLIST }}" ]; then
+            echo "✓ Using real GoogleService-Info.plist from secrets"
+            echo "${{ secrets.GOOGLE_SERVICES_PLIST }}" | base64 -d > platforms/ios/GoogleService-Info.plist
+          else
+            echo "⚠ GOOGLE_SERVICES_PLIST secret not found (required for iOS notifications)"
+          fi
+        fi
         
     - name: Build Android APK (Debug)
       if: ${{ github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == '' }}
