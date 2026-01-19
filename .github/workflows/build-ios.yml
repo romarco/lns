@@ -1,0 +1,176 @@
+# ========================================
+# GITHUB ACTIONS - BUILD iOS IPA
+# ========================================
+#
+# Este workflow compila automáticamente la app iOS usando Cordova 13+.
+#
+# REQUISITOS:
+#   - Node.js 20+ (instalado automáticamente)
+#   - macOS runner (⚠️ IMPORTANTE: Los runners de macOS son de pago en GitHub)
+#   - Xcode 15+ (preinstalado en macOS runner)
+#   - Cordova@latest (instalado automáticamente)
+#
+# SECRETS OPCIONALES (Configurar en GitHub → Settings → Secrets):
+#   - GOOGLE_SERVICES_PLIST: Archivo GoogleService-Info.plist en base64 (para Firebase/FCM)
+#
+# SECRETS REQUERIDOS PARA FIRMA (si quieres compilar release):
+#   - IOS_CERTIFICATE: Certificado de desarrollo/distribución en base64 (.p12)
+#   - IOS_CERTIFICATE_PASSWORD: Contraseña del certificado
+#   - IOS_PROVISIONING_PROFILE: Perfil de aprovisionamiento en base64 (.mobileprovision)
+#
+# FUNCIONAMIENTO:
+#   1. Se ejecuta manualmente desde Actions → Run workflow
+#   2. Opciones manuales: build_type (debug/release)
+#   3. Build debug: No requiere firma, genera .app
+#   4. Build release: Requiere certificados, genera .ipa firmado
+#   5. Artifact descargable al finalizar (dura 90 días)
+#
+# TIEMPO ESTIMADO: 8-12 minutos (macOS runners son más lentos)
+#
+# COSTO: macOS runners cuestan 10x más que Linux runners
+#        - Linux: $0.008/minuto
+#        - macOS: $0.08/minuto
+#        Ejemplo: 10 minutos = $0.80 USD
+#
+# ========================================
+
+name: Build iOS IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: false
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install Cordova
+      run: npm install -g cordova@latest
+        
+    - name: Install dependencies
+      run: npm install || true
+      
+    - name: Add iOS platform
+      run: cordova platform add ios@latest
+      
+    - name: Setup Firebase Configuration Files
+      run: |
+        # iOS: GoogleService-Info.plist
+        if [ -n "${{ secrets.GOOGLE_SERVICES_PLIST }}" ]; then
+          echo "✓ Using real GoogleService-Info.plist from secrets"
+          echo "${{ secrets.GOOGLE_SERVICES_PLIST }}" | base64 -d > platforms/ios/GoogleService-Info.plist
+        else
+          echo "⚠ Creating dummy GoogleService-Info.plist (notifications won't work)"
+          cat > platforms/ios/GoogleService-Info.plist << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+          <key>CLIENT_ID</key>
+          <string>123456789000-dummy.apps.googleusercontent.com</string>
+          <key>REVERSED_CLIENT_ID</key>
+          <string>com.googleusercontent.apps.123456789000-dummy</string>
+          <key>API_KEY</key>
+          <string>AIzaSyDummyKeyForBuildOnly123456789</string>
+          <key>GCM_SENDER_ID</key>
+          <string>123456789000</string>
+          <key>PLIST_VERSION</key>
+          <string>1</string>
+          <key>BUNDLE_ID</key>
+          <string>com.lawrancenetworkservices.www</string>
+          <key>PROJECT_ID</key>
+          <string>dummy-project</string>
+          <key>STORAGE_BUCKET</key>
+          <string>dummy-project.appspot.com</string>
+          <key>IS_ADS_ENABLED</key>
+          <false/>
+          <key>IS_ANALYTICS_ENABLED</key>
+          <false/>
+          <key>IS_APPINVITE_ENABLED</key>
+          <false/>
+          <key>IS_GCM_ENABLED</key>
+          <true/>
+          <key>IS_SIGNIN_ENABLED</key>
+          <true/>
+          <key>GOOGLE_APP_ID</key>
+          <string>1:123456789000:ios:0000000000000000</string>
+        </dict>
+        </plist>
+        EOF
+        fi
+      
+    - name: Setup iOS Signing (Release only)
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      run: |
+        # Crear keychain temporal
+        security create-keychain -p "" build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p "" build.keychain
+        security set-keychain-settings -t 3600 -l ~/Library/Keychains/build.keychain
+        
+        # Importar certificado
+        echo "${{ secrets.IOS_CERTIFICATE }}" | base64 -d > certificate.p12
+        security import certificate.p12 -k build.keychain -P "${{ secrets.IOS_CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign -T /usr/bin/security
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+        
+        # Instalar provisioning profile
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 -d > ~/Library/MobileDevice/Provisioning\ Profiles/build.mobileprovision
+        
+        echo "✓ iOS signing configured"
+    
+    - name: Build iOS (Debug)
+      if: ${{ github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == '' }}
+      run: |
+        cordova build ios --debug --device
+        echo "✓ iOS Debug build completed"
+    
+    - name: Build iOS (Release)
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      run: |
+        cordova build ios --release --device
+        echo "✓ iOS Release build completed"
+    
+    - name: Create IPA (Release only)
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      run: |
+        cd platforms/ios/build/device
+        mkdir -p Payload
+        cp -r *.app Payload/
+        zip -r app-release.ipa Payload
+        mv app-release.ipa ../../../../
+        cd ../../../../
+        echo "✓ IPA created successfully"
+    
+    - name: Upload iOS Artifact (Debug)
+      if: ${{ github.event.inputs.build_type == 'debug' || github.event.inputs.build_type == '' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-ios-debug
+        path: platforms/ios/build/device/*.app
+        retention-days: 90
+    
+    - name: Upload iOS Artifact (Release)
+      if: ${{ github.event.inputs.build_type == 'release' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-ios-release
+        path: app-release.ipa
+        retention-days: 90

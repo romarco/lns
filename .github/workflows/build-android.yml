@@ -1,3 +1,30 @@
+# ========================================
+# GITHUB ACTIONS - BUILD ANDROID APK
+# ========================================
+#
+# Este workflow compila automáticamente la app Android usando Cordova 13+ y Android SDK 35.
+#
+# REQUISITOS:
+#   - Node.js 20+ (instalado automáticamente)
+#   - Java 17 (Temurin - instalado automáticamente)
+#   - Cordova@latest (instalado automáticamente)
+#   - Android SDK 35 (setup-android@v3)
+#
+# SECRETS OPCIONALES (Configurar en GitHub → Settings → Secrets):
+#   - GOOGLE_SERVICES_JSON: Archivo google-services.json en base64 (para Firebase/FCM)
+#   - GOOGLE_SERVICES_PLIST: Archivo GoogleService-Info.plist en base64 (para iOS)
+#
+# FUNCIONAMIENTO:
+#   1. Se ejecuta automáticamente al hacer push a main/master/develop
+#   2. También se puede ejecutar manualmente desde Actions → Run workflow
+#   3. Opciones manuales: platform (android/ios), build_type (debug/release)
+#   4. Hook before_compile se ejecuta automáticamente para limpiar AndroidManifest
+#   5. APK descargable como artifact al finalizar (dura 90 días)
+#
+# TIEMPO ESTIMADO: 3-5 minutos
+#
+# ========================================
+
 name: Build Android APK
 
 on:

@@ -17,8 +17,8 @@ var app = {
             authFlow: 'simple',      // 'simple' o 'multi-branch'
             version: '1.0.0',
             projectName: 'App: Lawrance Network Services',
-            apiUrl: 'https://tuservidor.com/sys/',       // ⚠️ CONFIGURAR: URL del servidor + /sys/
-            serverRootUrl: 'https://tuservidor.com',     // ⚠️ CONFIGURAR: URL raíz del servidor
+            apiUrl: 'https://lawrancenetworkservices.com/sys/',       // ⚠️ CONFIGURAR: URL del servidor + /sys/
+            serverRootUrl: 'https://lawrancenetworkservices.com',     // ⚠️ CONFIGURAR: URL raíz del servidor
             offlineMode: true,
             language: 'es',
             languageIndex: 0,
