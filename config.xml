@@ -39,6 +39,14 @@
         <preference name="AutoHideSplashScreen" value="true"/>
         
         <allow-intent href="market:*"/>
+        
+        <!-- Fix android:exported for Android 12+ (SDK 31+) -->
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/activity[@android:name='com.gae.scaffolder.plugin.FCMPluginActivity']" mode="merge">
+            <activity android:exported="true" />
+        </edit-config>
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application/service[@android:name='com.gae.scaffolder.plugin.MyFirebaseMessagingService']" mode="merge">
+            <service android:exported="false" />
+        </edit-config>
     </platform>
     
     <!-- iOS -->
