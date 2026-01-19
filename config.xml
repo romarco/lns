@@ -8,6 +8,9 @@
     
     <access origin="*"/>
     
+    <!-- Hook para limpiar permisos duplicados -->
+    <hook type="after_prepare" src="hooks/after_prepare/remove_duplicate_permissions.js" />
+    
     <!-- Preferencias globales -->
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="BackupWebStorage" value="none"/>
@@ -36,9 +39,6 @@
         <preference name="AutoHideSplashScreen" value="true"/>
         
         <allow-intent href="market:*"/>
-        
-        <!-- Remove duplicate permissions added by plugins -->
-        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/uses-permission[@android:name='android.permission.WRITE_EXTERNAL_STORAGE']" mode="remove" />
     </platform>
     
     <!-- iOS -->
