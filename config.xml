@@ -9,7 +9,7 @@
     <access origin="*"/>
     
     <!-- Hook para limpiar permisos duplicados -->
-    <hook type="after_prepare" src="hooks/after_prepare/remove_duplicate_permissions.js" />
+    <hook type="before_compile" src="hooks/before_compile/remove_duplicate_permissions.js" />
     
     <!-- Preferencias globales -->
     <preference name="DisallowOverscroll" value="true"/>
