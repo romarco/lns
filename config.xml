@@ -6,7 +6,17 @@
     
     <content src="www/index.html"/>
     
+    <!-- Políticas de acceso y navegación -->
     <access origin="*"/>
+    <allow-navigation href="http://*/*"/>
+    <allow-navigation href="https://*/*"/>
+    <allow-navigation href="data:*"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <allow-intent href="tel:*"/>
+    <allow-intent href="sms:*"/>
+    <allow-intent href="mailto:*"/>
+    <allow-intent href="geo:*"/>
     
     <!-- Hook para limpiar permisos duplicados -->
     <hook type="before_compile" src="hooks/before_compile/remove_duplicate_permissions.js" />
