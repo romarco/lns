@@ -437,7 +437,10 @@
                   cancelButtonLabel: {visible: false, label: null}
                 }, function() { }, function() { });
               });
-            };\n            reader.readAsArrayBuffer(file);\n          });\n        });
+            };
+            reader.readAsArrayBuffer(file);
+          });
+        });
       },
       addPhotoToGallery: function(photoData) {
         const lang = app.data.config.languageIndex;
