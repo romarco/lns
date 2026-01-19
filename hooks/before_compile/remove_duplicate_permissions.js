@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Hook de Cordova para eliminar permisos duplicados en AndroidManifest.xml
- * Se ejecuta antes de compilar para asegurar que el manifest esté limpio
+ * Hook de Cordova para limpiar AndroidManifest.xml
+ * - Elimina permisos duplicados
+ * - Agrega android:exported a componentes FCM (requerido para Android 12+)
  */
 
 const fs = require('fs');
@@ -17,12 +18,12 @@ module.exports = function(context) {
         return;
     }
     
-    console.log('Checking for duplicate permissions in AndroidManifest.xml...');
+    console.log('🔧 Fixing AndroidManifest.xml for Android 12+ compatibility...');
     
     let manifestContent = fs.readFileSync(manifestPath, 'utf8');
     let modified = false;
     
-    // Remover TODAS las líneas de WRITE_EXTERNAL_STORAGE excepto la primera
+    // 1. Remover permisos duplicados de WRITE_EXTERNAL_STORAGE
     const lines = manifestContent.split('\n');
     const writeStorageLines = [];
     
@@ -33,9 +34,8 @@ module.exports = function(context) {
     });
     
     if (writeStorageLines.length > 1) {
-        console.log(`Found ${writeStorageLines.length} WRITE_EXTERNAL_STORAGE permissions. Keeping only the first one...`);
+        console.log(`  ✓ Found ${writeStorageLines.length} WRITE_EXTERNAL_STORAGE permissions. Keeping only the first one...`);
         
-        // Remover todas excepto la primera (en orden inverso para no afectar los índices)
         for (let i = writeStorageLines.length - 1; i > 0; i--) {
             lines.splice(writeStorageLines[i], 1);
             modified = true;
@@ -44,10 +44,42 @@ module.exports = function(context) {
         manifestContent = lines.join('\n');
     }
     
+    // 2. Agregar android:exported a FCMPluginActivity si no lo tiene
+    if (manifestContent.includes('com.gae.scaffolder.plugin.FCMPluginActivity')) {
+        const activityRegex = /(<activity[^>]*android:name="com\.gae\.scaffolder\.plugin\.FCMPluginActivity"[^>]*)(>)/;
+        if (activityRegex.test(manifestContent)) {
+            const match = manifestContent.match(activityRegex);
+            if (match && !match[0].includes('android:exported')) {
+                manifestContent = manifestContent.replace(
+                    activityRegex,
+                    '$1 android:exported="true"$2'
+                );
+                console.log('  ✓ Added android:exported="true" to FCMPluginActivity');
+                modified = true;
+            }
+        }
+    }
+    
+    // 3. Agregar android:exported a MyFirebaseMessagingService si no lo tiene
+    if (manifestContent.includes('com.gae.scaffolder.plugin.MyFirebaseMessagingService')) {
+        const serviceRegex = /(<service[^>]*android:name="com\.gae\.scaffolder\.plugin\.MyFirebaseMessagingService"[^>]*)(>)/;
+        if (serviceRegex.test(manifestContent)) {
+            const match = manifestContent.match(serviceRegex);
+            if (match && !match[0].includes('android:exported')) {
+                manifestContent = manifestContent.replace(
+                    serviceRegex,
+                    '$1 android:exported="false"$2'
+                );
+                console.log('  ✓ Added android:exported="false" to MyFirebaseMessagingService');
+                modified = true;
+            }
+        }
+    }
+    
     if (modified) {
         fs.writeFileSync(manifestPath, manifestContent, 'utf8');
-        console.log('✓ AndroidManifest.xml cleaned successfully');
+        console.log('✅ AndroidManifest.xml fixed successfully');
     } else {
-        console.log('✓ No duplicate permissions found');
+        console.log('✅ AndroidManifest.xml is already correct');
     }
 };
