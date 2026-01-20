@@ -3924,7 +3924,9 @@ var mangole = mangole || {};
 
       }
       var msgalertid = document.getElementById("mangole-msgalert000");
-      msgalertid.parentNode.removeChild(msgalertid);
+      if (msgalertid && msgalertid.parentNode) {
+        msgalertid.parentNode.removeChild(msgalertid);
+      }
 
       
     }
