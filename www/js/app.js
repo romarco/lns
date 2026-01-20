@@ -809,7 +809,8 @@ var app = {
             .then(function(result) {
                 if (result.status !== 'ok') throw new Error(result.message);
                 
-                var scriptPath = result.module.script_path + '?v=' + result.module.version;
+                // Construir URL completa del script (script_path es relativo desde www/)
+                var scriptPath = app.data.config.serverRootUrl + '/' + result.module.script_path + '?v=' + result.module.version;
                 
                 // Descargar el script
                 return fetch(scriptPath).then(function(response) {
