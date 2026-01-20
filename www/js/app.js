@@ -489,11 +489,13 @@ var app = {
         
         var metadata = localStorage.getItem('modules_metadata');
         
-        // Si ya hay metadata → cargar field configs y luego app
+        // Si ya hay metadata → cargar módulos desde filesystem y luego app
         if (metadata) {
-            app.loadFieldConfigsFromFile(function(success) {
-                // Cargar app sin importar si field configs existen o no
-                app.loadMainApp();
+            app.loadModulesFromFilesystem(function() {
+                app.loadFieldConfigsFromFile(function(success) {
+                    // Cargar app sin importar si field configs existen o no
+                    app.loadMainApp();
+                });
             });
             return;
         }
@@ -564,15 +566,19 @@ var app = {
                 
                 if (moduleCount > 0) {
                     if (!app.hasConnection()) {
-                        // Ya hay módulos y sin conexión → cargar field configs y usar caché
-                        app.loadFieldConfigsFromFile(function(success) {
-                            app.loadMainApp();
+                        // Ya hay módulos y sin conexión → cargar módulos desde filesystem
+                        app.loadModulesFromFilesystem(function() {
+                            app.loadFieldConfigsFromFile(function(success) {
+                                app.loadMainApp();
+                            });
                         });
                         return;
                     }
-                    // Hay módulos Y conexión → cargar field configs y usar caché
-                    app.loadFieldConfigsFromFile(function(success) {
-                        app.loadMainApp();
+                    // Hay módulos Y conexión → cargar módulos desde filesystem
+                    app.loadModulesFromFilesystem(function() {
+                        app.loadFieldConfigsFromFile(function(success) {
+                            app.loadMainApp();
+                        });
                     });
                     return;
                 }
@@ -915,6 +921,92 @@ var app = {
                     var allSucceeded = alreadyCached.concat(succeeded);
                     if (callback) callback(allSucceeded, failed);
                 }
+            });
+        });
+    },
+    
+    /**
+     * Cargar módulos desde filesystem (Cordova) al DOM
+     * Lee los archivos .js descargados y los ejecuta
+     * @param {function} callback - Función callback cuando termine
+     */
+    loadModulesFromFilesystem: function(callback) {
+        var metadata = localStorage.getItem('modules_metadata');
+        if (!metadata) {
+            console.log('[app] No hay metadata de módulos');
+            if (callback) callback();
+            return;
+        }
+        
+        var modulesMetadata = {};
+        try {
+            modulesMetadata = JSON.parse(metadata);
+        } catch (e) {
+            console.error('[app] Error parseando modules_metadata:', e);
+            if (callback) callback();
+            return;
+        }
+        
+        var moduleKeys = Object.keys(modulesMetadata);
+        if (moduleKeys.length === 0) {
+            console.log('[app] No hay módulos en metadata');
+            if (callback) callback();
+            return;
+        }
+        
+        console.log('[app] Cargando ' + moduleKeys.length + ' módulo(s) desde filesystem...');
+        
+        var loaded = 0;
+        var total = moduleKeys.length;
+        
+        moduleKeys.forEach(function(moduleKey) {
+            var moduleData = modulesMetadata[moduleKey];
+            var fileName = moduleData.fileName;
+            
+            window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function(dirEntry) {
+                dirEntry.getFile(fileName, {create: false}, function(fileEntry) {
+                    fileEntry.file(function(file) {
+                        var reader = new FileReader();
+                        
+                        reader.onloadend = function() {
+                            try {
+                                // Ejecutar el código del módulo
+                                eval(this.result);
+                                loaded++;
+                                console.log('[app] Módulo cargado desde filesystem: ' + moduleKey + ' (' + loaded + '/' + total + ')');
+                                
+                                if (loaded === total) {
+                                    console.log('[app] Todos los módulos cargados desde filesystem');
+                                    if (callback) callback();
+                                }
+                            } catch (e) {
+                                console.error('[app] Error ejecutando módulo ' + moduleKey + ':', e);
+                                loaded++;
+                                if (loaded === total && callback) callback();
+                            }
+                        };
+                        
+                        reader.onerror = function(error) {
+                            console.error('[app] Error leyendo archivo ' + fileName + ':', error);
+                            loaded++;
+                            if (loaded === total && callback) callback();
+                        };
+                        
+                        reader.readAsText(file);
+                    }, function(error) {
+                        console.error('[app] Error accediendo archivo ' + fileName + ':', error);
+                        loaded++;
+                        if (loaded === total && callback) callback();
+                    });
+                }, function(error) {
+                    console.error('[app] Error buscando archivo ' + fileName + ':', error);
+                    loaded++;
+                    if (loaded === total && callback) callback();
+                });
+            }, function(error) {
+                console.error('[app] Error resolveLocalFileSystemURL:', error);
+                loaded++;
+                if (loaded === total && callback) callback();
             });
         });
     },
