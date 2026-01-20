@@ -781,13 +781,26 @@ var app = {
         var failed = [];
         
         moduleKeys.forEach(function(moduleKey) {
+            // Obtener session_token
+            var sessionToken = '';
+            var userData = localStorage.getItem('user_data');
+            if (userData) {
+                try {
+                    var parsed = JSON.parse(userData);
+                    sessionToken = parsed.session_token || '';
+                } catch (e) {
+                    console.error('[app] Error parseando user_data:', e);
+                }
+            }
+            
             // Obtener metadata del módulo
             fetch(app.data.config.apiUrl + 'module-loader-api.php', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     module_key: moduleKey,
-                    platform: 'mobile'
+                    platform: 'mobile',
+                    session_token: sessionToken
                 })
             })
             .then(function(response) {

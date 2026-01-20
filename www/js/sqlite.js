@@ -57,7 +57,7 @@ var SQLite = (function() {
                 db = window.sqlitePlugin.openDatabase({
                     name: dbName,
                     location: 'default',
-                    androidDatabaseProvider: 'external'
+                    androidDatabaseProvider: 'default'
                 });
                 
                 isReady = true;
