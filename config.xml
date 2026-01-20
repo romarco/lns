@@ -4,7 +4,7 @@
     <description></description>
     <author email="dev@example.com">Dev Team</author>
     
-    <content src="www/index.html"/>
+    <content src="index.html"/>
     
     <!-- Políticas de acceso y navegación -->
     <access origin="*"/>
